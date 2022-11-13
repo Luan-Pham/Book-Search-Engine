@@ -1,10 +1,12 @@
+const { AuthenticationError } = require('appolo-server-express');
 const { User } = require('../models');
+const { signToken } = require('../utils/auth');
 
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate('thoughts');
+        return User.findOne({ _id: context.user._id }).populate('savedBooks');
       }
       throw new AuthenticationError('You need to be logged in!');
     },
@@ -33,5 +35,11 @@ const resolvers = {
 
       return { token, user };
     },
+    saveBook: async (parent, { Book }, context) => {
+      const book = await Book.findOne({
+        Book,
+      });
+    },
+    removeBook,
   },
 };

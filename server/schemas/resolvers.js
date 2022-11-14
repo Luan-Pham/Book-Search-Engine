@@ -35,17 +35,29 @@ const resolvers = {
 
       return { token, user };
     },
-    saveBook: async (parent, { Book }) => {
+    saveBook: async (
+      parent,
+      { userId, authors, description, title, image, link }
+    ) => {
       const newBook = User.findOneAndUpdate(
         { _id: userId },
-        { $addToSet: { saveBook: Book }, new: true }
+        {
+          $addToSet: { saveBook: authors, description, title, image, link },
+          new: true,
+        }
       );
       throw new AuthenticationError('You need to be logged in!');
     },
-    removeBook: async (parent, { Book }) => {
+    removeBook: async (
+      parent,
+      { userId, authors, description, title, image, link }
+    ) => {
       const deleteBook = User.findOneAndUpdate(
         { _id: userId },
-        { $pull: { saveBook: Book }, new: true }
+        {
+          $pull: { saveBook: authors, description, title, image, link },
+          new: true,
+        }
       );
       throw new AuthenticationError('You need to be logged in!');
     },
